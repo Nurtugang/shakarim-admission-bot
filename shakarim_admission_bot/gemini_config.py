@@ -12,7 +12,7 @@ def ask_gemini(
     question: str,
     system_instruction: str = "",
     model_name: str = "gemini-2.0-flash",
-    temperature: float = 0.25,
+    temperature: float = 0.2,
     max_output_tokens: int = 300,
     tools: dict = None
 ):
