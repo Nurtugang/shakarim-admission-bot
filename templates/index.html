@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shakarim Admission Bot API</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            color: #333;
+        }
+        h1 {
+            color: #2c3e50;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 10px;
+        }
+        h2 {
+            color: #2980b9;
+            margin-top: 30px;
+        }
+        .endpoint {
+            background-color: #f8f9fa;
+            border-left: 4px solid #3498db;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 0 4px 4px 0;
+        }
+        .endpoint h3 {
+            margin-top: 0;
+            color: #3498db;
+        }
+        .endpoint p {
+            margin-bottom: 5px;
+        }
+        .endpoint code {
+            background-color: #e9ecef;
+            padding: 2px 5px;
+            border-radius: 3px;
+            font-family: monospace;
+        }
+        footer {
+            margin-top: 50px;
+            text-align: center;
+            font-size: 0.9em;
+            color: #7f8c8d;
+        }
+    </style>
+</head>
+<body>
+    <h1>Shakarim Admission Bot API</h1>
+    <p>
+        Добро пожаловать на API страницу бота-помощника для поступающих в Университет Шакарима города Семей.
+        Этот проект разработан в рамках инновационной программы AI Sana.
+    </p>
+
+    <h2>Доступные API эндпоинты:</h2>
+
+    <div class="endpoint">
+        <h3>Получить ответ от Gemini</h3>
+        <p><strong>URL:</strong> <code>/api/ask_gemini/</code></p>
+        <p><strong>Метод:</strong> <code>GET</code></p>
+        <p><strong>Параметры:</strong> <code>question</code> - вопрос пользователя</p>
+        <p><strong>Пример:</strong> <code>/api/ask_gemini/?question=Какие документы нужны для поступления?</code></p>
+    </div>
+
+    <div class="endpoint">
+        <h3>Умный ответ с учетом базы знаний</h3>
+        <p><strong>URL:</strong> <code>/api/smart_ask_gemini/</code></p>
+        <p><strong>Метод:</strong> <code>GET</code></p>
+        <p><strong>Параметры:</strong> <code>question</code> - вопрос пользователя</p>
+        <p><strong>Пример:</strong> <code>/api/smart_ask_gemini/?question=Какие есть гранты?</code></p>
+    </div>
+
+    <div class="endpoint">
+        <h3>Получить знания из базы</h3>
+        <p><strong>URL:</strong> <code>/api/get_knowledge/</code></p>
+        <p><strong>Метод:</strong> <code>GET</code></p>
+        <p><strong>Параметры:</strong> <code>category</code> (опционально) - категория знаний</p>
+        <p><strong>Пример:</strong> <code>/api/get_knowledge/?category=гранты</code></p>
+    </div>
+
+    <div class="endpoint">
+        <h3>Добавить знание в базу</h3>
+        <p><strong>URL:</strong> <code>/api/add_knowledge/</code></p>
+        <p><strong>Метод:</strong> <code>POST</code></p>
+        <p><strong>Тело запроса:</strong></p>
+        <pre><code>{
+  "category": "документы",
+  "text": "Информация о документах для поступления."
+}</code></pre>
+    </div>
+
+    <div class="endpoint">
+        <h3>Удалить знание из базы</h3>
+        <p><strong>URL:</strong> <code>/api/delete_knowledge/&lt;doc_id&gt;/</code></p>
+        <p><strong>Метод:</strong> <code>DELETE</code></p>
+        <p><strong>Пример:</strong> <code>/api/delete_knowledge/fUuYi6ojkJW...</code></p>
+    </div>
+
+    <footer>
+        <p>Shakarim Admission Bot &copy; 2025 - Разработан в рамках программы AI Sana</p>
+    </footer>
+</body>
+</html>
