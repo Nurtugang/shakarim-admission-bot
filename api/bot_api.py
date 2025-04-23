@@ -44,22 +44,29 @@ def get_relevant_knowledge(question):
     """
     # Получаем все документы из базы знаний
     docs = firebase_db.collection("knowledge-base").stream()
-    knowledge_list = [doc.to_dict()["text"] for doc in docs]
+    
+    knowledge_list = []
+    
+    for doc in docs:
+        try:
+            # Пытаемся получить текст из документа
+            knowledge_list.append(doc.to_dict()["text"])
+        except KeyError:
+            # Если не удалось найти ключ 'text', выводим информацию
+            print(f"Документ с ID {doc.id} не содержит поля 'text'.")
     
     # Объединяем всю базу знаний в один текст
     knowledge_text = "\n".join(knowledge_list)
     
     return knowledge_text
 
+
 def smart_ask_gemini(question):
     """
     Улучшенная версия функции ask_gemini, которая включает контекст
     из базы знаний Firebase для более точных ответов.
     """
-    # Сначала проверяем, относится ли вопрос к теме поступления
-    if not is_admission_related(question):
-        return "Извините, я могу отвечать только на вопросы, связанные с поступлением в Университет Шакарима. Пожалуйста, задайте вопрос о документах, грантах, сроках или процедуре поступления."
-    
+
     # Получаем релевантные знания из базы данных
     knowledge = get_relevant_knowledge(question)
     
