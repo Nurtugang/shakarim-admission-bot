@@ -1,98 +1,59 @@
-from shakarim_admission_bot.gemini_config import ask_gemini
-from shakarim_admission_bot.firebase_config import firebase_db
+import logging
+from google import genai
+from google.genai import types
+from shakarim_admission_bot.gemini_config import gemini_model
+from .knowledge_functions import knowledge_tools
 
-def is_admission_related(question):
-    """
-    Проверяет, связан ли вопрос с темой поступления в университет.
-    """
-    # Используем Gemini для определения релевантности вопроса
-    system_instruction = """
-    Ты - фильтр вопросов для бота приемной комиссии Университета Шакарима.
-    Твоя задача - определить, относится ли вопрос к теме поступления в университет.
-    
-    Темы, которые считаются релевантными:
-    - Документы для поступления
-    - Гранты и стипендии
-    - Сроки подачи заявлений и проведения экзаменов
-    - Специальности и факультеты
-    - Общежития и условия проживания студентов
-    - Вступительные экзамены
-    - Процедура подачи документов
-    - Другие вопросы, напрямую связанные с поступлением
-    
-    Ответь строго "yes" если вопрос релевантный или "no" если не релевантный.
-    Не давай никаких пояснений, только "yes" или "no".
-    """
-    
-    response = ask_gemini(
-        question=f"Относится ли следующий вопрос к теме поступления в университет?: '{question}'",
-        system_instruction=system_instruction,
-        max_output_tokens=10,
-        temperature=0.1
-    )
-    
-    # Очищаем ответ от возможных лишних символов
-    response = response.strip().lower()
-    
-    # Проверяем ответ
-    return "yes" in response
-
-def get_relevant_knowledge(question):
-    """
-    Получает релевантные знания из базы данных на основе вопроса.
-    Простая реализация без сложных алгоритмов.
-    """
-    # Получаем все документы из базы знаний
-    docs = firebase_db.collection("knowledge-base").stream()
-    
-    knowledge_list = []
-    
-    for doc in docs:
-        try:
-            # Пытаемся получить текст из документа
-            knowledge_list.append(doc.to_dict()["text"])
-        except KeyError:
-            # Если не удалось найти ключ 'text', выводим информацию
-            print(f"Документ с ID {doc.id} не содержит поля 'text'.")
-    
-    # Объединяем всю базу знаний в один текст
-    knowledge_text = "\n".join(knowledge_list)
-    
-    return knowledge_text
+logger = logging.getLogger(__name__)
 
 
 def smart_ask_gemini(question):
     """
-    Улучшенная версия функции ask_gemini, которая включает контекст
-    из базы знаний Firebase для более точных ответов.
+    Uses Gemini Function Calling (Automatic Python SDK version) to answer questions
+    about Shakarim University based on predefined knowledge functions.
+    Handles relevance based on the system prompt and available tools.
+    """
+    if not gemini_model:
+        logger.error("Gemini model not initialized for smart_ask_gemini.")
+        return "Извините, возникла проблема с конфигурацией AI-помощника. Попробуйте позже."
+
+    system_instruction = f"""
+    Ты - дружелюбный и информативный бот-помощник приемной комиссии Университета Шакарима города Семей.
+    Твоя задача - отвечать ТОЛЬКО на вопросы абитуриентов и студентов об Университете Шакарима (поступление, обучение, студенческая жизнь, структура, контакты и т.д.).
+
+    Для получения информации используй ТОЛЬКО предоставленные тебе функции (tools).
+    Проанализируй вопрос пользователя.
+    1. Если вопрос касается Университета Шакарима, вызови одну или несколько подходящих функций для получения ответа.
+    2. Если вопрос НЕ касается Университета Шакарима или является общим (например, "как дела?", "расскажи анекдот"), НЕ ИСПОЛЬЗУЙ функции. Вежливо ответь, что ты можешь помочь только с вопросами об Университете Шакарима.
+    3. Если вопрос касается университета, но у тебя НЕТ подходящей функции для ответа, НЕ ИСПОЛЬЗУЙ другие функции и не придумывай ответ. Вежливо сообщи, что информацией по этому конкретному аспекту ты не обладаешь, но можешь ответить на другие вопросы об университете.
+
+    Формулируй ответы на основе информации, полученной ИСКЛЮЧИТЕЛЬНО из вызванных функций.
+    Отвечай всегда на русском языке. Будь кратким, но точным и полным в пределах полученной информации.
+    Не упоминай в ответе, что ты используешь функции или инструменты. Просто предоставь ответ пользователю.
     """
 
-    # Получаем релевантные знания из базы данных
-    knowledge = get_relevant_knowledge(question)
-    
-    # Создаем системную инструкцию, которая включает контекст
-    system_instruction = f"""
-    Ты - бот-помощник для поступающих в Университет Шакарима города Семей.
-    
-    Твоя задача - давать точные и полезные ответы на вопросы о поступлении.
-    Будь дружелюбным, информативным и кратким.
-    
-    Используй предоставленные знания для ответов на вопросы:
-    
-    {knowledge}
-    
-    Если в предоставленных знаниях нет ответа на вопрос, используй свои общие знания.
-    Но всегда отдавай приоритет информации из базы знаний.
-    
-    Отвечай только на русском языке.
-    """
-    
-    # Отправляем запрос к Gemini с контекстом
-    response = ask_gemini(
-        question=question,
-        system_instruction=system_instruction,
-        max_output_tokens=500,  # Увеличиваем максимальную длину ответа
-        temperature=0.2  # Делаем ответы более точными
-    )
-    
-    return response
+    try:
+        logger.info(f"Sending question to Gemini with function calling and integrated relevance check: '{question}'")
+
+        generation_config = types.GenerateContentConfig(
+            tools=knowledge_tools,
+            system_instruction=system_instruction,
+            temperature=0.2,
+            max_output_tokens = 1000
+        )
+        contents = [
+            {"role": "user", "parts": [{"text": question}]}
+        ]
+
+        response = gemini_model.client.models.generate_content(
+            model=gemini_model.model_name,
+            contents=contents,
+            config=generation_config
+        )
+        final_answer = response.text
+        logger.info(f"Received final answer from Gemini: '{final_answer[:50]}...'")
+        return final_answer
+
+    except Exception as e:
+        logger.error(f"Error during smart_ask_gemini: {e}", exc_info=True)
+        return "Извините, произошла ошибка при обработке вашего запроса. Пожалуйста, попробуйте позже."
