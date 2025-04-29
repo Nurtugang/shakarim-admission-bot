@@ -1,3 +1,4 @@
+import time
 import logging
 from google import genai
 from google.genai import types
@@ -6,8 +7,36 @@ from .knowledge_functions import knowledge_tools
 
 logger = logging.getLogger(__name__)
 
+user_chats = {}
 
-def smart_ask_gemini(question):
+
+def retry_with_backoff_with_fallback(send_func_factory, max_retries=3, base_delay=1):
+    """
+    Retries send_func (from a factory) with exponential backoff.
+    Switches to a fallback model on the final retry.
+
+    Args:
+        send_func_factory (callable): Function that returns a callable send_func.
+        max_retries (int): Number of retry attempts.
+        base_delay (float): Delay in seconds.
+
+    Returns:
+        The result from send_func or raises last exception.
+    """
+    for attempt in range(max_retries):
+        try:
+            send_func = send_func_factory(attempt)
+            return send_func()
+        except Exception as e:
+            logging.warning(f"[Retry {attempt+1}/{max_retries}] Error: {e}")
+            if attempt < max_retries - 1:
+                delay = base_delay * (2 ** attempt)
+                time.sleep(delay)
+            else:
+                raise
+
+
+def smart_ask_gemini(question, user_id):
     """
     Uses Gemini Function Calling (Automatic Python SDK version) to answer questions
     about Shakarim University based on predefined knowledge functions.
@@ -18,42 +47,62 @@ def smart_ask_gemini(question):
         return "Извините, возникла проблема с конфигурацией AI-помощника. Попробуйте позже."
 
     system_instruction = f"""
-    Ты - дружелюбный и информативный бот-помощник приемной комиссии Университета Шакарима города Семей.
-    Твоя задача - отвечать ТОЛЬКО на вопросы абитуриентов и студентов об Университете Шакарима (поступление, обучение, студенческая жизнь, структура, контакты и т.д.).
+Ты — дружелюбный и информативный бот-помощник приёмной комиссии Университета Шакарима в городе Семей.
+Твоя задача — отвечать на вопросы абитуриентов и студентов об Университете Шакарима (поступление, обучение, студенческая жизнь, структура, контакты и т.д.).
 
-    Для получения информации используй ТОЛЬКО предоставленные тебе функции (tools).
-    Проанализируй вопрос пользователя.
-    1. Если вопрос касается Университета Шакарима, вызови одну или несколько подходящих функций для получения ответа.
-    2. Если вопрос НЕ касается Университета Шакарима или является общим (например, "как дела?", "расскажи анекдот"), НЕ ИСПОЛЬЗУЙ функции. Вежливо ответь, что ты можешь помочь только с вопросами об Университете Шакарима.
-    3. Если вопрос касается университета, но у тебя НЕТ подходящей функции для ответа, НЕ ИСПОЛЬЗУЙ другие функции и не придумывай ответ. Вежливо сообщи, что информацией по этому конкретному аспекту ты не обладаешь, но можешь ответить на другие вопросы об университете.
+Для получения информации используй предоставленные тебе функции (tools).
+Анализируй вопрос пользователя.
+1. Если вопрос касается Университета Шакарима, вызови одну или несколько соответствующих функций для получения ответа.
+2. Если вопрос НЕ касается Университета Шакарима или является общим (например, "как дела?", "расскажи анекдот"), вежливо ответь, что ты можешь помочь только с вопросами об Университете Шакарима.
+3. Если вопрос касается университета, но у тебя НЕТ подходящей функции для ответа, вежливо сообщи, что у тебя нет информации по данному аспекту, но ты можешь ответить на другие вопросы об университете.
 
-    Формулируй ответы на основе информации, полученной ИСКЛЮЧИТЕЛЬНО из вызванных функций.
-    Отвечай всегда на русском языке. Будь кратким, но точным и полным в пределах полученной информации.
-    Не упоминай в ответе, что ты используешь функции или инструменты. Просто предоставь ответ пользователю.
-    """
+Будь кратким, но точным и полным в рамках полученной информации.
+Не упоминай в ответе, что ты используешь функции или инструменты. Просто предоставь ответ пользователю.
+"""
 
     try:
-        logger.info(f"Sending question to Gemini with function calling and integrated relevance check: '{question}'")
+        if user_id not in user_chats:
+            logger.info(f"Creating new chat session for user: {user_id}")
+            user_chats[user_id] = gemini_model.client.chats.create(
+                model=gemini_model.model_name,
+                config=types.GenerateContentConfig(
+                    tools=knowledge_tools,
+                    temperature=0.2,
+                    max_output_tokens=1500,
+                    system_instruction=system_instruction
+                )
+            )
 
-        generation_config = types.GenerateContentConfig(
-            tools=knowledge_tools,
-            system_instruction=system_instruction,
-            temperature=0.2,
-            max_output_tokens = 1000
-        )
-        contents = [
-            {"role": "user", "parts": [{"text": question}]}
-        ]
+        def send_func_factory(attempt):
+            logger.info(f"Sending message to Gemini chat for user {user_id}: {question}")
+            if attempt < 2:
+                chat = user_chats[user_id]
+                return lambda: (
+                    logger.info(f"[Try {attempt+1}] Using default model for user {user_id}"),
+                    chat.send_message(question)
+                )[1]
+            else:
+                fallback_key = f"{user_id}_fallback"
+                if fallback_key not in user_chats:
+                    logger.warning("Creating fallback chat session...")
+                    user_chats[fallback_key] = gemini_model.client.chats.create(
+                        model="gemini-1.5-flash-002",
+                        config=types.GenerateContentConfig(
+                            tools=knowledge_tools,
+                            temperature=0.2,
+                            max_output_tokens=1500,
+                            system_instruction=system_instruction
+                        )
+                    )
+                chat = user_chats[fallback_key]
+                return lambda: chat.send_message(question)
 
-        response = gemini_model.client.models.generate_content(
-            model=gemini_model.model_name,
-            contents=contents,
-            config=generation_config
-        )
-        final_answer = response.text
-        logger.info(f"Received final answer from Gemini: '{final_answer[:50]}...'")
-        return final_answer
+        response = retry_with_backoff_with_fallback(send_func_factory, max_retries=3)
+        return response.text
 
     except Exception as e:
         logger.error(f"Error during smart_ask_gemini: {e}", exc_info=True)
         return "Извините, произошла ошибка при обработке вашего запроса. Пожалуйста, попробуйте позже."
+
+
+

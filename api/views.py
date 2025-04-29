@@ -9,9 +9,13 @@ from .serializers import KnowledgeBaseSerializer
 @api_view(["GET"])
 def smart_ask_question(request):
     question = request.GET.get("question", None)
+    user_id = request.GET.get("user_id", None)
 
     if not question:
         return Response({"error": "Вопрос не задан."}, status=400)
 
-    answer = smart_ask_gemini(question)
+    if not user_id:
+        return Response({"error": "Не указан идентификатор пользователя."}, status=400)
+
+    answer = smart_ask_gemini(question, user_id)
     return Response({"answer": answer})

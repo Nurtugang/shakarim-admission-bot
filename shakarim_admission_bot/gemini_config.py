@@ -10,9 +10,34 @@ logging.basicConfig(level=logging.INFO)
 
 GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
 
-MODEL_NAME = "gemini-2.0-flash"
+MODEL_PRIORITY_LIST = [
+    "gemini-2.0-flash",
+    "gemini-1.5-flash-002",
+    "gemini-2.0-flash-lite-001",
+]
+
 client = None
 gemini_model = None
+
+class GeminiModelWrapper:
+    def __init__(self, client, model_name):
+        self.client = client
+        self.model_name = model_name
+
+    def generate_content(self, prompt, **kwargs):
+        response = self.client.models.generate_content(
+            model=self.model_name,
+            contents=[prompt],
+            **kwargs
+        )
+        return response
+
+    def generate_content_stream(self, prompt, **kwargs):
+        return self.client.models.generate_content_stream(
+            model=self.model_name,
+            contents=[prompt],
+            **kwargs
+        )
 
 if not GEMINI_API_KEY:
     logger.error("GEMINI_API_KEY environment variable not found. Gemini features will be disabled.")
@@ -21,35 +46,19 @@ else:
         client = genai.Client(api_key=GEMINI_API_KEY)
         logger.info("Gemini client initialized successfully.")
 
-        class GeminiModelWrapper:
-            def __init__(self, client, model_name):
-                self.client = client
-                self.model_name = model_name
+        for model_name in MODEL_PRIORITY_LIST:
+            try:
+                logger.info(f"Testing Gemini model '{model_name}'...")
+                test_model = GeminiModelWrapper(client, model_name)
+                test_response = test_model.generate_content("test")
+                logger.info(f"Model '{model_name}' is working.")
+                gemini_model = test_model
+                break
+            except Exception as test_error:
+                logger.warning(f"Model '{model_name}' failed: {test_error}")
 
-            def generate_content(self, prompt, **kwargs):
-                response = self.client.models.generate_content(
-                    model=self.model_name,
-                    contents=[prompt],
-                    **kwargs
-                )
-                return response
-
-            def generate_content_stream(self, prompt, **kwargs):
-                return self.client.models.generate_content_stream(
-                    model=self.model_name,
-                    contents=[prompt],
-                    **kwargs
-                )
-
-        gemini_model = GeminiModelWrapper(client, MODEL_NAME)
-
-        try:
-            logger.info(f"Testing Gemini model '{MODEL_NAME}'...")
-            test_response = gemini_model.generate_content("test")
-            logger.info("Test call succeeded.")
-        except Exception as test_error:
-            logger.error(f"Test call failed: {test_error}")
-            gemini_model = None
+        if not gemini_model:
+            logger.error("All Gemini models failed. No model is available.")
 
     except Exception as e:
         logger.error(f"Failed to initialize Gemini client: {e}", exc_info=True)
