@@ -1,8 +1,12 @@
 def get_campus_life_info() -> str:
-    """Provides information specifically about 'campus life' at Shakarim University.
-        Generated automatically from knowledge base entries.
-        Call this function when the user asks about topics related to campus life.
-        """
+    """
+    Returns information about student life and campus activities at Shakarim University.
+
+    Use this function when the user asks about daily life, clubs, facilities, museums, or the atmosphere on campus.
+
+    Returns:
+        str: Details about events, virtual tours, student organizations, and infrastructure.
+    """
     print(f"--- Function: get_campus_life_info called ---")
     return f"""Фотогалерея Шәкәрім Университета
 
@@ -33,10 +37,14 @@ https://shakarim.edu.kz/ru/site/panorama?pathway=universitet
 
 
 def get_international_cooperation_info() -> str:
-    """Provides information specifically about 'international cooperation' at Shakarim University.
-        Generated automatically from knowledge base entries.
-        Call this function when the user asks about topics related to international cooperation.
-        """
+    """
+    Returns information about international partnerships and dual-degree programs.
+
+    Use this function when the user asks about studying abroad, partnerships with foreign universities, or international mobility.
+
+    Returns:
+        str: List of programs, partner institutions, requirements, and application process.
+    """
     print(f"--- Function: get_international_cooperation_info called ---") # For debugging
     return f"""Университет Шәкәрім активно развивает международное сотрудничество с ведущими образовательными и научными учреждениями по всему миру. Партнёрские связи охватывают широкий географический спектр и включают как университеты, так и исследовательские институты.
 Список о зарубежные партнерах вы можете узнать, перейдя по ссылке на официальный сайт https://shakarim.edu.kz/ru/international/partners?pathway=mezhdunarodnoye-sotrudnichestvo
@@ -78,10 +86,14 @@ University of Economy in Bydgoszcz (Польша)
 
 
 def get_about_university_info() -> str:
-    """Provides information specifically about 'about university' at Shakarim University.
-        Generated automatically from knowledge base entries.
-        Call this function when the user asks about topics related to about university.
-        """
+    """
+    Returns a general overview of Shakarim University.
+
+    Use this function when the user asks "What is Shakarim University?" or about its size, mission, or educational philosophy.
+
+    Returns:
+        str: Description of the university’s structure, faculty, students, and facilities.
+    """
     print(f"--- Function: get_about_university_info called ---") # For debugging
     return f"""Шәкәрім Университет  – это современный учебно-методический, научный и культурный центр северо-восточного региона Казахстана.
 
@@ -103,10 +115,14 @@ def get_about_university_info() -> str:
 
 
 def get_education_programs_info() -> str:
-    """Provides information specifically about 'education programs' at Shakarim University.
-        Generated automatically from knowledge base entries.
-        Call this function when the user asks about topics related to education programs.
-        """
+    """
+    Returns details about educational programs at Shakarim University.
+
+    Use this function when the user asks about specializations, minors, dual programs, or curriculum details.
+
+    Returns:
+        str: Program types, structure, and popular disciplines.
+    """
     print(f"--- Function: get_education_programs_info called ---") # For debugging
     return f"""Дуальное обучение в Университете Шәкәрім — это форма подготовки кадров, сочетающая обучение в университете с обязательными периодами профессиональной практики на предприятиях. Такая система обеспечивает равную ответственность университета, предприятия и обучающегося за процесс обучения и способствует формированию практических навыков у студентов.​
 
@@ -131,10 +147,14 @@ def get_education_programs_info() -> str:
 
 
 def get_accommodation_info() -> str:
-    """Provides information specifically about 'accommodation' at Shakarim University.
-        Generated automatically from knowledge base entries.
-        Call this function when the user asks about topics related to accommodation.
-        """
+    """
+    Returns information about student accommodation and dormitory facilities.
+
+    Use this function when the user asks where students live, dormitory conditions, or costs.
+
+    Returns:
+        str: Dorm addresses, amenities, application process, and pricing.
+    """
     print(f"--- Function: get_accommodation_info called ---") # For debugging
     return f"""Все студенты, нуждающиеся в жилье, будут размещены в одном из 4 общежитий. Адреса общежития:
    - №1 общежитие - Физкультурная, 2а;
@@ -171,28 +191,15 @@ def get_accommodation_info() -> str:
 - договор на заселение в общежитие;
 - медицинский осмотр."""
 
-
-def get_accreditation_ratings_info() -> str:
-    """Provides information specifically about 'accreditation ratings' at Shakarim University.
-        Generated automatically from knowledge base entries.
-        Call this function when the user asks about topics related to accreditation ratings.
-        """
-    print(f"--- Function: get_accreditation_ratings_info called ---") # For debugging
-    return f"""Аккредитация Университета имени Шакарима
-Институциональная аккредитация
-Впервые получена в ноябре 2013 года от IAAR.
-Повторно пройдена в 2018 и 2023 годах агентством ARQA (последняя — на 7 лет).
-Специализированная аккредитация
-Подтверждает соответствие образовательных программ современным требованиям, их актуальность и ориентированность на потребности рынка.
-Проводится агентством ARQA и охватывает отдельные образовательные программы.
-Аккредитации подтверждают высокое качество образования и стремление к международной интеграции."""
-
-
 def get_education_formats_info() -> str:
-    """Provides information specifically about 'education formats' at Shakarim University.
-        Generated automatically from knowledge base entries.
-        Call this function when the user asks about topics related to education formats.
-        """
+    """
+    Returns information about formats of education including distance and trilingual learning.
+
+    Use this function when the user asks about online courses, flexible formats, or language of instruction.
+
+    Returns:
+        str: Description of education delivery modes and language support.
+    """
     print(f"--- Function: get_education_formats_info called ---") # For debugging
     return f"""​В Университете Шәкәрім дистанционное образование реализуется в соответствии с внутренним положением, регулирующим организацию учебного процесса с применением электронного обучения и дистанционных образовательных технологий. Это положение определяет порядок проведения занятий, промежуточной и итоговой аттестации, а также права и обязанности участников образовательного процесса. Дистанционное обучение направлено на обеспечение доступности и гибкости получения образования, позволяя студентам осваивать учебные программы вне зависимости от их местоположения. Для получения более подробной информации вы можете ознакомиться с полным текстом положения на официальном сайте университета: https://shakarim.edu.kz/ru/pages/index?pathway=obrazovaniye&slug=ssylki-na-normativnyye-dokumenty-dot
 
@@ -207,10 +214,14 @@ expeducation.ru
 
 
 def get_accreditation_rating_info() -> str:
-    """Provides information specifically about 'accreditation rating' at Shakarim University.
-        Generated automatically from knowledge base entries.
-        Call this function when the user asks about topics related to accreditation rating.
-        """
+    """
+    Returns details about university rankings, accreditations, and quality certifications.
+
+    Use this function when the user asks about the university’s reputation, ranking, or quality status.
+
+    Returns:
+        str: Accreditation bodies, QS/GreenMetrics positions, and evaluation criteria.
+    """
     print(f"--- Function: get_accreditation_rating_info called ---") # For debugging
     return f"""QS Asia University Rankings 2025
 Университет Шакарима занимает позиции в диапазоне #501–520 среди 985 университетов Азии.
@@ -245,14 +256,26 @@ UI Green Metric World University Ranking 2024
 20 место среди 97 университетов по количеству и качеству публикаций.
 
 Рейтинг образовательных программ НПП «Атамекен»
-Результаты доступны на официальном сайте НПП."""
+Результаты доступны на официальном сайте НПП.
+Аккредитация Университета имени Шакарима
+Институциональная аккредитация
+Впервые получена в ноябре 2013 года от IAAR.
+Повторно пройдена в 2018 и 2023 годах агентством ARQA (последняя — на 7 лет).
+Специализированная аккредитация
+Подтверждает соответствие образовательных программ современным требованиям, их актуальность и ориентированность на потребности рынка.
+Проводится агентством ARQA и охватывает отдельные образовательные программы.
+Аккредитации подтверждают высокое качество образования и стремление к международной интеграции."""
 
 
 def get_mobility_exchange_info() -> str:
-    """Provides information specifically about 'mobility_exchange' at Shakarim University.
-        Generated automatically from knowledge base entries.
-        Call this function when the user asks about topics related to mobility_exchange.
-        """
+    """
+    Returns information about academic mobility and student exchange programs.
+
+    Use this function when the user asks how to study in another university for a semester or year.
+
+    Returns:
+        str: Mobility rules, language requirements, and partner country details.
+    """
     print(f"--- Function: get_mobility_exchange_info called ---") # For debugging
     return f"""​В Университете имени Шакарима города Семей профессиональная практика является важной частью образовательного процесса, направленной на закрепление теоретических знаний и развитие практических навыков студентов. Практика проводится на различных этапах обучения и включает учебную, производственную и преддипломную практики. Базы профессиональной практики охватывают широкий спектр организаций, включая школы, предприятия и научные учреждения, что обеспечивает студентам возможность получить опыт в реальных условиях. Подробную информацию о положении о профессиональной практике и перечне баз можно найти на официальном сайте университета. https://shakarim.edu.kz/ru/pages/index?pathway=obrazovaniye&slug=polozheniye-o-vnutrenney-akademicheskoy-mobilnosti
 
@@ -262,10 +285,14 @@ def get_mobility_exchange_info() -> str:
 
 
 def get_graduate_studies_info() -> str:
-    """Provides information specifically about 'graduate studies' at Shakarim University.
-        Generated automatically from knowledge base entries.
-        Call this function when the user asks about topics related to graduate studies.
-        """
+    """
+    Returns information about PhD and postgraduate study options.
+
+    Use this function when the user asks about doctoral programs, research directions, or academic progression.
+
+    Returns:
+        str: List of programs and application guidelines.
+    """
     print(f"--- Function: get_graduate_studies_info called ---") # For debugging
     return f"""​В Университете Шәкәрім реализуются программы докторантуры PhD по следующим направлениям:​
 
@@ -285,10 +312,14 @@ D111 – Производство продуктов питания: научн�
 
 
 def get_student_services_info() -> str:
-    """Provides information specifically about 'student services' at Shakarim University.
-        Generated automatically from knowledge base entries.
-        Call this function when the user asks about topics related to student services.
-        """
+    """
+    Returns information about administrative services available to students.
+
+    Use this function when the user asks where to get documents, certificates, or make formal requests.
+
+    Returns:
+        str: List of services and links to the student service portal.
+    """
     print(f"--- Function: get_student_services_info called ---") # For debugging
     return f"""В Центре обслуживания обучающихся оказываются следующие услуги:
 
@@ -319,10 +350,14 @@ https://shakarim.edu.kz/ru/pages/index?pathway=obuchayushchimsya&slug=putevodite
 
 
 def get_student_organizations_info() -> str:
-    """Provides information specifically about 'student organizations' at Shakarim University.
-        Generated automatically from knowledge base entries.
-        Call this function when the user asks about topics related to student organizations.
-        """
+    """
+    Returns information about student-led clubs, organizations, and governance bodies.
+
+    Use this function when the user asks how to get involved or join clubs at the university.
+
+    Returns:
+        str: Summary of cultural, intellectual, and volunteer student organizations.
+    """
     print(f"--- Function: get_student_organizations_info called ---") # For debugging
     return f"""Малый деканат в Шәкәрім Университете — это студенческий орган самоуправления, направленный на развитие лидерских качеств, организацию культурных и социальных мероприятий, а также поддержку инициатив студентов. Он способствует формированию активной гражданской позиции и улучшению студенческой среды.​
 
@@ -380,10 +415,14 @@ Enactus
 
 
 def get_administrative_info_info() -> str:
-    """Provides information specifically about 'administrative_info' at Shakarim University.
-        Generated automatically from knowledge base entries.
-        Call this function when the user asks about topics related to administrative_info.
-        """
+    """
+    Returns administrative and legal information about the university.
+
+    Use this function when the user asks about bank details, governance, or regulatory documents.
+
+    Returns:
+        str: Financial and legal facts, corporate governance overview.
+    """
     print(f"--- Function: get_administrative_info_info called ---") # For debugging
     return f"""Банковские реквизиты
 Полное наименование	Некоммерческое акционерное общество «Шәкәрім Университет»
@@ -405,10 +444,14 @@ https://shakarim.edu.kz/ru/pages/index?pathway=universitet&slug=korporativnyye-d
 
 
 def get_scholarships_grants_info() -> str:
-    """Provides information specifically about 'scholarships grants' at Shakarim University.
-        Generated automatically from knowledge base entries.
-        Call this function when the user asks about topics related to scholarships grants.
-        """
+    """
+    Returns details about scholarships, grants, and financial support.
+
+    Use this function when the user asks about funding, stipend programs, or how to apply for financial aid.
+
+    Returns:
+        str: Requirements, types of scholarships, and application process.
+    """
     print(f"--- Function: get_scholarships_grants_info called ---") # For debugging
     return f"""Программа «Серпін-2050» — это квота на бесплатное обучение молодежи из южных регионов Казахстана с последующим трудоустройством в регионах с дефицитом кадров (Абайская, ВКО, СКО, Карагандинская и др.).
 
@@ -481,10 +524,14 @@ https://shakarim.edu.kz/ru/pages/index?pathway=obuchayushchimsya&slug=polozheniy
 
 
 def get_practical_training_info() -> str:
-    """Provides information specifically about 'practical training' at Shakarim University.
-        Generated automatically from knowledge base entries.
-        Call this function when the user asks about topics related to practical training.
-        """
+    """
+    Returns information about internships and practical training opportunities.
+
+    Use this function when the user asks where students get work experience or how practice is organized.
+
+    Returns:
+        str: Details on industry partnerships and mandatory practical courses.
+    """
     print(f"--- Function: get_practical_training_info called ---") # For debugging
     return f"""Положение о профессиональной практике
 В университете Шәкәрім профессиональная практика является обязательной частью образовательного процесса и направлена на закрепление теоретических знаний, развитие практических навыков и приобретение профессионального опыта. Практика проходит в организациях, соответствующих профилю подготовки, по утвержденным программам и графику.
@@ -497,10 +544,14 @@ def get_practical_training_info() -> str:
 
 
 def get_university_governance_info() -> str:
-    """Provides information specifically about 'university governance' at Shakarim University.
-        Generated automatically from knowledge base entries.
-        Call this function when the user asks about topics related to university governance.
-        """
+    """
+    Returns information about the university’s leadership and governance structure.
+
+    Use this function when the user asks who runs the university or about the board of directors.
+
+    Returns:
+        str: Rector, vice-rectors, and organizational structure details.
+    """
     print(f"--- Function: get_university_governance_info called ---") # For debugging
     return f"""Ректором университета - Орынбеков Думан Рымгалиевич. Проректор по стратегии и социальному развитию - Қасымов Асқар Бағдатұлы.  Проректор по интернационализации и инновациям - Дулатбай Ерасыл Алтайұлы. Проректор по академическим вопросам - Дарибаев Беимбет Серикович. Проректор по науке - Қалибекқызы Жанар. Для более подробной информации можете перейдя по ссылке на официальный сайт https://shakarim.edu.kz/ru/board-of-directors/list?pathway=universitet.
 
@@ -538,10 +589,14 @@ https://shakarim.edu.kz/ru/structure/uchenyy-sovet?pathway=universitet"""
 
 
 def get_locations_contacts_info() -> str:
-    """Provides information specifically about 'locations and contacts' at Shakarim University.
-        Generated automatically from knowledge base entries.
-        Call this function when the user asks about topics related to locations and contacts.
-        """
+    """
+    Returns campus addresses and contact numbers for university services.
+
+    Use this function when the user asks where buildings are located or needs contact info.
+
+    Returns:
+        str: List of building addresses, dormitories, and phone/email contacts.
+    """
     print(f"--- Function: get_locations_contacts_info called ---") # For debugging
     return f"""главный корпус университета находится по адресу :Глинки 20А. Корпус №9 находится по адресу: ул. Физкультурная 4. Корпус №3 находится по адресу: ул. Кашагана 2. Корпус №5 находится по адресу: ул. Шугаева 159/3а. Корпус №6 находится по адресу: ул. Шугаева 159/3б.  Корпус №8 находится по адресу: ул. Шугаева 159/3. Спорткомплекс находится по адресу: ул. Физкультурная 4б. Научный центр радиоэкологических исследований находится по адресу: ул. Физкультурная 4в. Спорткомплекс (Кашагана) находится по адресу: ул.Кашагана 1. Адреса общежитий:
 №1 - Физкультурная, 2а;
@@ -564,10 +619,14 @@ Call centre: kense@shakarim.kz, info@semgu.kz"""
 
 
 def get_admission_info() -> str:
-    """Provides information specifically about 'admission' at Shakarim University.
-        Generated automatically from knowledge base entries.
-        Call this function when the user asks about topics related to admission.
-        """
+    """
+    Returns key information about the admission process.
+
+    Use this function when the user asks about documents, deadlines, or how to apply.
+
+    Returns:
+        str: Admission requirements, required documents, and contact for help.
+    """
     print(f"--- Function: get_admission_info called ---") # For debugging
     return f"""Прием документов обычно заканчивается в конце июля. Если не успели подать документы, обратитесь в приемную комиссию для возможных вариантов.
 
@@ -578,19 +637,28 @@ def get_admission_info() -> str:
 
 
 def get_tutions_fees_info() -> str:
-    """Provides information specifically about 'tutions_fees' at Shakarim University.
-        Generated automatically from knowledge base entries.
-        Call this function when the user asks about topics related to tutions_fees.
-        """
+    """
+    Returns current tuition fees for programs at the university.
+
+    Use this function when the user asks how much studying costs.
+
+    Returns:
+        str: Fee range by specialization and year.
+    """
+
     print(f"--- Function: get_tutions_fees_info called ---") # For debugging
     return f"""Обучение стоит от 300 000 до 700 000 тенге в год в зависимости от специальности"""
 
 
 def get_research_facilities_info() -> str:
-    """Provides information specifically about 'research facilities' at Shakarim University.
-        Generated automatically from knowledge base entries.
-        Call this function when the user asks about topics related to research facilities.
-        """
+    """
+    Returns information about the university’s research labs and equipment.
+
+    Use this function when the user asks about scientific infrastructure or lab capabilities.
+
+    Returns:
+        str: Description of available research tools and tech.
+    """
     print(f"--- Function: get_research_facilities_info called ---") # For debugging
     return f"""Научное оборудование Shakarim University включает современную технику для проведения высокоточных исследований:
 Сканирующий электронный микроскоп JEOL 6390LV
@@ -605,10 +673,14 @@ def get_research_facilities_info() -> str:
 
 
 def get_university_history_info() -> str:
-    """Provides information specifically about 'university_history' at Shakarim University.
-        Generated automatically from knowledge base entries.
-        Call this function when the user asks about topics related to university_history.
-        """
+    """
+    Returns a historical timeline of Shakarim University.
+
+    Use this function when the user asks when the university was founded or its key milestones.
+
+    Returns:
+        str: Timeline of institutional development from founding to present.
+    """
     print(f"--- Function: get_university_history_info called ---") # For debugging
     return f"""В 1934 г. был основан Семипалатинский педагогический институт.
 
@@ -677,7 +749,6 @@ knowledge_tools = [
     get_about_university_info,
     get_education_programs_info,
     get_accommodation_info,
-    get_accreditation_ratings_info,
     get_education_formats_info,
     get_accreditation_rating_info,
     get_mobility_exchange_info,
